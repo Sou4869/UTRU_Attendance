@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究室 勤怠管理</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>研究室 勤怠管理</h1>
+
+    <div class="card">
+        <h2>打刻・予定登録</h2>
+        <select id="user-select"></select>
+        <div class="actions">
+            <button onclick="checkin('在室')">在室</button>
+            <button onclick="checkin('外出')">外出</button>
+            <button onclick="checkin('帰宅')">帰宅</button>
+        </div>
+        <div class="schedule-input">
+            <input type="date" id="schedule-date">
+            <input type="text" id="schedule-text" placeholder="例: 13:00-18:00">
+            <button onclick="updateSchedule()">予定を登録</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>メンバーの状況</h2>
+        <table id="status-table">
+            <thead>
+                <tr>
+                    <th>名前</th>
+                    <th>現在の状態</th>
+                    <th>今日の予定</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
