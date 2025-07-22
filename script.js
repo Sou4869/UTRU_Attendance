@@ -77,16 +77,23 @@ async function loadMembers() {
             input.id = radioId;
             input.name = group.name;
             input.value = doc.id;
-
+            input.onchange = (e) => syncRadioButtons(e.target);
             const label = document.createElement('label');
             label.htmlFor = radioId;
             label.textContent = fullName;
-
             wrapper.appendChild(input);
             wrapper.appendChild(label);
             group.container.appendChild(wrapper);
         });
     });
+}
+
+function syncRadioButtons(changedRadio) {
+    const targetName = changedRadio.name === 'status_user' ? 'schedule_user' : 'status_user';
+    const otherRadio = document.querySelector(`input[name="${targetName}"][value="${changedRadio.value}"]`);
+    if (otherRadio) {
+        otherRadio.checked = true;
+    }
 }
 
 async function loadAllStatuses() {
@@ -184,15 +191,15 @@ function initializeCalendar() {
         locale: 'ja',
         initialView: 'dayGridMonth',
         headerToolbar: {
-            left: 'prev,today,next',
+            left: 'dayGridMonth,timeGridWeek',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek'
+            right: 'prev,today,next'
         },
         height: 'auto',
         slotMinTime: '08:00:00',
-        slotMaxTime: '22:00:00', // 21:30のコマまで表示
+        slotMaxTime: '22:00:00',
         views: {
-            timeGridWeek: { allDayText: 'メンバー' }
+            timeGridWeek: { allDaySlot: false }
         },
         dayCellContent: function(arg) {
             return { html: arg.dayNumberText.replace('日', '') };
@@ -206,19 +213,11 @@ function initializeCalendar() {
             }
             return `${dayNum} (${dayOfWeek})`;
         },
-        viewDidMount: function(view) {
-            // weekタブへの切り替え時(スマホ含む)にイベントを再取得し、バー表示のバグを解消
-            calendar.refetchEvents();
-        },
         eventClick: async info => {
             const docId = info.event.extendedProps.firestoreId;
             if (!docId) return;
-
-            // ▼▼▼ `name`フィールドを使わないように修正 ▼▼▼
             const member = membersData[info.event.extendedProps.userId];
             const memberName = member ? `${member.lastname} ${member.firstname}` : '不明';
-            // ▲▲▲ `name`フィールドを使わないように修正 ▲▲▲
-
             if (confirm(`${memberName}さんのこの予定を削除しますか？`)) {
                 try {
                     await db.collection('schedules').doc(docId).delete();
@@ -233,31 +232,23 @@ function initializeCalendar() {
         eventContent: function(arg) {
             const memberInfo = membersData[arg.event.extendedProps.userId];
             if (!memberInfo) return;
-
             let titleHtml = '';
             let classNames = arg.event.classNames.slice();
-
             const isMobile = window.innerWidth < 768;
 
             if (arg.view.type === 'dayGridMonth') {
                 titleHtml = isMobile ? memberInfo.lastname : `${memberInfo.lastname} ${memberInfo.firstname}`;
             } else if (arg.view.type === 'timeGridWeek') {
-                if (arg.event.allDay) {
-                    titleHtml = isMobile ? memberInfo.lastname : `${memberInfo.lastname} ${memberInfo.firstname}`;
+                if (isMobile) {
+                    titleHtml = '';
                 } else {
-                    if (isMobile) {
-                        titleHtml = ''; // スマホのバーは名前なし
-                    } else {
-                        titleHtml = `${memberInfo.lastname}<br>${memberInfo.firstname}`;
-                        classNames.push('fc-event-vertical');
-                    }
+                    titleHtml = `${memberInfo.lastname}<br>${memberInfo.firstname}`;
+                    classNames.push('fc-event-vertical');
                 }
             }
-            
             if (arg.event.extendedProps.remarks) {
                 titleHtml += `<span class="remarks-indicator">💬</span>`;
             }
-            
             return { html: titleHtml, classNames: classNames };
         },
         eventDidMount: info => {
@@ -271,8 +262,7 @@ function initializeCalendar() {
                 await fetchJapanHolidays();
                 calendar.refetchEvents();
             }
-        },
-        events: fetchCalendarEvents
+        }
     });
     
     fetchJapanHolidays().then(() => {
@@ -288,30 +278,19 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
             const schedule = doc.data();
             const memberInfo = membersData[schedule.userId];
             if (!memberInfo) return;
+
             const eventProps = { firestoreId: doc.id, userId: schedule.userId, remarks: schedule.remarks };
+            const [startTime, endTime] = schedule.time.split('-');
             
-            const commonEventData = {
-                title: '', // 表示はeventContentで制御
-                backgroundColor: memberInfo.color,
-                borderColor: memberInfo.color,
-                extendedProps: eventProps
-            };
-
-            if (calendar.view.type === 'timeGridWeek') {
-                // All-day欄の名前用イベント
-                events.push({ ...commonEventData, start: schedule.date, allDay: true });
-
-                // 時間グリッドの棒グラフ用イベント
-                const [startTime, endTime] = schedule.time.split('-');
-                if (startTime && endTime) {
-                    events.push({
-                        ...commonEventData,
-                        start: `${schedule.date}T${startTime}`,
-                        end: `${schedule.date}T${endTime}`,
-                    });
-                }
-            } else { // 月表示
-                events.push({ ...commonEventData, start: schedule.date, allDay: true });
+            if (startTime && endTime) {
+                events.push({
+                    title: '', // 表示はeventContentで制御
+                    start: `${schedule.date}T${startTime}`,
+                    end: `${schedule.date}T${endTime}`,
+                    backgroundColor: memberInfo.color,
+                    borderColor: memberInfo.color,
+                    extendedProps: eventProps
+                });
             }
         });
         successCallback(events);
