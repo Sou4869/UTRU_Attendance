@@ -271,21 +271,28 @@ function initializeCalendar() {
 }
 
 async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) {
+    // ▼▼▼ デバッグコード ▼▼▼
     try {
+        console.log("1. fetchCalendarEventsが実行されました。ビュータイプ:", fetchInfo.view.type);
+
         const schedulesSnapshot = await db.collection('schedules').get();
+        console.log(`2. Firestoreから ${schedulesSnapshot.size} 件の予定データを取得しました。`);
+
         const events = [];
         schedulesSnapshot.docs.forEach(doc => {
             const schedule = doc.data();
             const memberInfo = membersData[schedule.userId];
-            if (!memberInfo) return;
+
+            if (!memberInfo) {
+                console.warn(`警告: 予定(ID: ${doc.id}) に一致するメンバー情報が見つかりません。スキップします。`);
+                return;
+            }
 
             const eventProps = { firestoreId: doc.id, userId: schedule.userId, remarks: schedule.remarks };
             
-            // ▼▼▼ 以前のバグの原因であった `calendar.view.type` を、
-            // 引数で渡される信頼性の高い `fetchInfo.view.type` を使うように修正 ▼▼▼
             if (fetchInfo.view.type === 'dayGridMonth') {
                 events.push({
-                    title: '', // 表示はeventContentで制御
+                    title: '',
                     start: schedule.date,
                     allDay: true,
                     backgroundColor: memberInfo.color,
@@ -296,18 +303,22 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
                 const [startTime, endTime] = schedule.time.split('-');
                 if (startTime && endTime) {
                     events.push({
-                        title: '', // 表示はeventContentで制御
+                        title: '',
                         start: `${schedule.date}T${startTime}`,
                         end: `${schedule.date}T${endTime}`,
                         backgroundColor: memberInfo.color,
                         borderColor: memberInfo.color,
                         extendedProps: eventProps
                     });
+                } else {
+                    console.warn(`警告: 予定(ID: ${doc.id}) の時間形式が正しくありません（time: "${schedule.time}"）。スキップします。`);
                 }
             }
-             // ▲▲▲ これで月表示でもイベントが正しく生成されます ▲▲▲
         });
+
+        console.log("3. カレンダーに渡すイベント配列を作成しました。件数:", events.length, "内容:", events);
         successCallback(events);
+    // ▲▲▲ デバッグコード ▲▲▲
     } catch (error) {
         console.error('Error fetching events:', error);
         failureCallback(error);
