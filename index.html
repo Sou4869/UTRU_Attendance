@@ -3,69 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>研究室 勤怠管理 (Firebase版)</title>
+    <title>在室管理システム</title>
     <link rel="stylesheet" href="style.css">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
 </head>
 <body>
-    <h1>研究室 勤怠管理</h1>
+    <header>
+        <h1>都市交通研究室14号館814号室<br>在室管理システム</h1>
+    </header>
 
-    <div class="card">
-        <h2>アクション</h2>
-        <div class="control-group">
-            <label for="user-select">名前:</label>
-            <select id="user-select"></select>
+    <main>
+        <div class="card">
+            <h2>現在</h2>
+            <div class="control-group">
+                <label>名前:</label>
+                <div id="user-radio-buttons" class="radio-group">
+                    </div>
+            </div>
+
+            <div id="status-buttons">
+                <button onclick="checkin('在室')">在室</button>
+                <button onclick="checkin('外室中')">外室中</button>
+                <button onclick="checkin('不在')">不在</button>
+            </div>
         </div>
 
-        <div id="status-buttons">
-            <button onclick="checkin('在室')">在室</button>
-            <button onclick="checkin('外出')">外出</button>
-            <button onclick="checkin('帰宅')">帰宅</button>
+        <div class="card">
+            <h2>在室予定を登録</h2>
+            <div class="control-group">
+                <label for="schedule-date">日付:</label>
+                <div class="date-quick-select">
+                    <button onclick="setDate(1)">明日</button>
+                    <button onclick="setDate(2)">明後日</button>
+                    <button onclick="setDate(3)">3日後</button>
+                    <button onclick="setDate(4)">4日後</button>
+                    <button onclick="setDate(5)">5日後</button>
+                </div>
+                <input type="date" id="schedule-date">
+            </div>
+            <div class="control-group schedule-time">
+                <label>時間:</label>
+                <select id="start-hour"></select> : <select id="start-minute"><option value="00">00</option><option value="30">30</option></select>
+                <span>～</span>
+                <select id="end-hour"></select> : <select id="end-minute"><option value="00">00</option><option value="30">30</option></select>
+            </div>
+            <div class="control-group">
+                <label for="schedule-remarks">備考:</label>
+                <input type="text" id="schedule-remarks" placeholder="例：リモート参加、終日会議など">
+            </div>
+            <button onclick="updateSchedule()" class="submit-button">予定を登録</button>
         </div>
-    </div>
 
-    <div class="card">
-        <h2>未来の予定を登録</h2>
-        <div class="control-group">
-            <label for="schedule-date">日付:</label>
-            <input type="date" id="schedule-date">
+        <div class="card">
+            <h2>メンバーの現在の状態</h2>
+            <table id="status-table">
+                <thead>
+                    <tr>
+                        <th>名前</th>
+                        <th>現在の状態</th>
+                        <th>最終更新</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
         </div>
-        <div class="control-group schedule-time">
-            <label>時間:</label>
-            <select id="start-hour"></select> : <select id="start-minute"><option value="00">00</option><option value="30">30</option></select>
-            <span>～</span>
-            <select id="end-hour"></select> : <select id="end-minute"><option value="00">00</option><option value="30">30</option></select>
-        </div>
-        <div class="control-group">
-            <label for="schedule-remarks">備考:</label>
-            <input type="text" id="schedule-remarks" placeholder="例：リモート参加">
-        </div>
-        <button onclick="updateSchedule()" class="submit-button">予定を登録</button>
-    </div>
 
-    <div class="card">
-        <h2>メンバーの現在の状況</h2>
-        <table id="status-table">
-            <thead>
-                <tr>
-                    <th>名前</th>
-                    <th>現在の状態</th>
-                    <th>最終更新</th>
-                </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <h2>予定カレンダー</h2>
-        <div id='calendar'></div>
-    </div>
+        <div class="card">
+            <h2>予定カレンダー</h2>
+            <div id='calendar'></div>
+        </div>
+    </main>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
