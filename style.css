@@ -36,24 +36,27 @@ h2 {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     margin: 1rem auto;
     max-width: 800px;
 }
 
 /* フォーム要素 */
+.control-group {
+    margin-bottom: 1.5rem; /* 間隔を広げる */
+}
 .control-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
-select, input[type="date"], input[type="text"], button {
+select, input, button {
     width: 100%;
     padding: 0.7rem;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 1rem;
-    box-sizing: border-box;
+    box-sizing: border-box; /* はみ出し防止の基本設定 */
 }
 .schedule-time select {
     width: auto;
@@ -71,14 +74,9 @@ select, input[type="date"], input[type="text"], button {
 }
 
 /* 日付クイック選択ボタン */
-.date-quick-select {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
+.date-quick-select { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
 .date-quick-select button {
-    flex: 1; /* 均等に幅を分割 */
-    padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ddd;
+    flex: 1; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ddd;
     background-color: #fff; border-radius: 6px; cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
@@ -120,17 +118,10 @@ select, input[type="date"], input[type="text"], button {
 }
 .fc-event-main { display: flex; align-items: center; overflow: hidden; }
 .remarks-indicator {
-    display: inline-block;
-    background-color: rgba(255,255,255,0.8);
-    color: #333;
-    border-radius: 50%;
-    width: 1.2em;
-    height: 1.2em;
-    text-align: center;
-    line-height: 1.2em;
-    font-size: 0.8em;
-    margin-left: 4px;
-    font-weight: bold;
+    display: inline-flex; justify-content: center; align-items: center;
+    background-color: rgba(255,255,255,0.8); color: #333;
+    border-radius: 50%; width: 1.2em; height: 1.2em;
+    font-size: 0.8em; margin-left: 4px; font-weight: bold;
 }
 .tippy-box { font-size: 0.9rem; }
 
@@ -149,20 +140,12 @@ select, input[type="date"], input[type="text"], button {
     .fc-header-toolbar.fc-toolbar {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
+        gap: 0.75rem; /* 各行の間隔 */
     }
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) { text-align: center; } /* title */
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) { text-align: center; } /* center (empty) */
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) { /* right (buttons) */
+    .fc-toolbar-chunk {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
     }
-    .fc-header-toolbar .fc-button-group {
-        display: contents; /* ボタンを横並びに展開 */
-    }
-    .fc-header-toolbar .fc-button {
-        flex: 1; /* ボタン幅を均等に */
-    }
-    .fc .fc-toolbar-title { font-size: 1.1rem; }
+    .fc .fc-toolbar-title { font-size: 1.2rem; }
 }
