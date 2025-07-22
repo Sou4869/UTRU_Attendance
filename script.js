@@ -173,6 +173,14 @@ async function updateSchedule() {
     }
 
     try {
+      // ▼▼▼▼▼ ここから追加 ▼▼▼▼▼
+        console.log("--- 予定登録データチェック ---");
+        console.log("ユーザーID:", userId);
+        console.log("日付:", date);
+        console.log("時間:", scheduleTime);
+        console.log("備考:", remarks);
+        // ▲▲▲▲▲ ここまで追加 ▲▲▲▲▲
+
         const querySnapshot = await db.collection('schedules').where('userId', '==', userId).where('date', '==', date).get();
 
         const scheduleData = {
