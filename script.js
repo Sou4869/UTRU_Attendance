@@ -158,14 +158,19 @@ async function updateSchedule() {
 // --- カレンダー関連 ---
 async function fetchJapanHolidays() {
     const year = new Date().getFullYear();
-    if (japanHolidays[year]) return;
+    // 複数年まとめて取得してキャッシュする
+    if (japanHolidays[year] && japanHolidays[year+1]) return;
     try {
-        const response = await fetch(`https://holidays-jp.github.io/api/v1/${year}/date.json`);
+        const response = await fetch('https://holidays-jp.github.io/api/v1/date.json');
         const data = await response.json();
-        japanHolidays[year] = data;
-        const nextResponse = await fetch(`https://holidays-jp.github.io/api/v1/${year + 1}/date.json`);
-        const nextData = await nextResponse.json();
-        japanHolidays[year + 1] = nextData;
+        // データを年ごとに整理してキャッシュ
+        for (const dateStr in data) {
+            const yearKey = new Date(dateStr).getFullYear();
+            if (!japanHolidays[yearKey]) {
+                japanHolidays[yearKey] = {};
+            }
+            japanHolidays[yearKey][dateStr] = data[dateStr];
+        }
     } catch (error) {
         console.error("祝日の取得に失敗しました:", error);
     }
@@ -221,7 +226,6 @@ function initializeCalendar() {
             }
         },
         datesSet: async (info) => {
-            // カレンダーの表示月が変わったら祝日を再取得・再描画
             const year = info.view.currentStart.getFullYear();
             if (!japanHolidays[year]) {
                 await fetchJapanHolidays();
