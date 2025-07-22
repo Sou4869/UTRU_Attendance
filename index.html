@@ -38,14 +38,16 @@
             </div>
             <div class="control-group">
                 <label for="schedule-date">日付:</label>
-                <div class="date-quick-select">
-                    <button type="button" onclick="setDate(1)">明日</button>
-                    <button type="button" onclick="setDate(2)">明後日</button>
-                    <button type="button" onclick="setDate(3)">3日後</button>
-                    <button type="button" onclick="setDate(4)">4日後</button>
-                    <button type="button" onclick="setDate(5)">5日後</button>
+                <div class="date-input-wrapper">
+                    <div class="date-quick-select">
+                        <button type="button" onclick="setDate(1)">明日</button>
+                        <button type="button" onclick="setDate(2)">明後日</button>
+                        <button type="button" onclick="setDate(3)">3日後</button>
+                        <button type="button" onclick="setDate(4)">4日後</button>
+                        <button type="button" onclick="setDate(5)">5日後</button>
+                    </div>
+                    <input type="date" id="schedule-date">
                 </div>
-                <input type="date" id="schedule-date">
             </div>
             <div class="control-group schedule-time">
                 <label>時間:</label>
