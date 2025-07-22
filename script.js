@@ -281,8 +281,9 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
 
             const eventProps = { firestoreId: doc.id, userId: schedule.userId, remarks: schedule.remarks };
             
-            // ▼▼▼ PC版(Month表示)でカレンダーが読み込まれないバグを修正 ▼▼▼
-            if (calendar.view.type === 'dayGridMonth') {
+            // ▼▼▼ 以前のバグの原因であった `calendar.view.type` を、
+            // 引数で渡される信頼性の高い `fetchInfo.view.type` を使うように修正 ▼▼▼
+            if (fetchInfo.view.type === 'dayGridMonth') {
                 events.push({
                     title: '', // 表示はeventContentで制御
                     start: schedule.date,
@@ -291,7 +292,7 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
                     borderColor: memberInfo.color,
                     extendedProps: eventProps
                 });
-            } else if (calendar.view.type === 'timeGridWeek') {
+            } else if (fetchInfo.view.type === 'timeGridWeek') {
                 const [startTime, endTime] = schedule.time.split('-');
                 if (startTime && endTime) {
                     events.push({
@@ -304,7 +305,7 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
                     });
                 }
             }
-            // ▲▲▲ PC版(Month表示)でカレンダーが読み込まれないバグを修正 ▲▲▲
+             // ▲▲▲ これで月表示でもイベントが正しく生成されます ▲▲▲
         });
         successCallback(events);
     } catch (error) {
