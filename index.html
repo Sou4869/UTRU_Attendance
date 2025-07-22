@@ -3,35 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>研究室 勤怠管理</title>
+    <title>研究室 勤怠管理 (Firebase版)</title>
     <link rel="stylesheet" href="style.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 </head>
 <body>
     <h1>研究室 勤怠管理</h1>
 
     <div class="card">
-        <h2>打刻・予定登録</h2>
-        <select id="user-select"></select>
-        <div class="actions">
+        <h2>アクション</h2>
+        <div class="control-group">
+            <label for="user-select">名前:</label>
+            <select id="user-select"></select>
+        </div>
+
+        <div id="status-buttons">
             <button onclick="checkin('在室')">在室</button>
             <button onclick="checkin('外出')">外出</button>
             <button onclick="checkin('帰宅')">帰宅</button>
         </div>
-        <div class="schedule-input">
-            <input type="date" id="schedule-date">
-            <input type="text" id="schedule-text" placeholder="例: 13:00-18:00">
-            <button onclick="updateSchedule()">予定を登録</button>
-        </div>
     </div>
 
     <div class="card">
-        <h2>メンバーの状況</h2>
+        <h2>未来の予定を登録</h2>
+        <div class="control-group">
+            <label for="schedule-date">日付:</label>
+            <input type="date" id="schedule-date">
+        </div>
+        <div class="control-group schedule-time">
+            <label>時間:</label>
+            <select id="start-hour"></select> : <select id="start-minute"><option value="00">00</option><option value="30">30</option></select>
+            <span>～</span>
+            <select id="end-hour"></select> : <select id="end-minute"><option value="00">00</option><option value="30">30</option></select>
+        </div>
+        <div class="control-group">
+            <label for="schedule-remarks">備考:</label>
+            <input type="text" id="schedule-remarks" placeholder="例：リモート参加">
+        </div>
+        <button onclick="updateSchedule()" class="submit-button">予定を登録</button>
+    </div>
+
+    <div class="card">
+        <h2>メンバーの現在の状況</h2>
         <table id="status-table">
             <thead>
                 <tr>
                     <th>名前</th>
                     <th>現在の状態</th>
-                    <th>今日の予定</th>
+                    <th>最終更新</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +58,14 @@
         </table>
     </div>
 
+    <div class="card">
+        <h2>予定カレンダー</h2>
+        <div id='calendar'></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
