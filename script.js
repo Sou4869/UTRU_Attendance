@@ -231,7 +231,7 @@ function initializeCalendar() {
         },
         eventContent: function(arg) {
             const memberInfo = membersData[arg.event.extendedProps.userId];
-            if (!memberInfo) return;
+            if (!memberInfo) return null;
             let titleHtml = '';
             let classNames = arg.event.classNames.slice();
             const isMobile = window.innerWidth < 768;
@@ -281,61 +281,36 @@ function initializeCalendar() {
     });
 }
 
-// ▼▼▼ 修正済みのイベント取得関数 ▼▼▼
+// ▼▼▼ 安定版のイベント取得関数 ▼▼▼
 async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) {
     try {
-        console.log("1. fetchCalendarEventsが実行されました。ビュータイプ:", fetchInfo.view.type);
-
         const schedulesSnapshot = await db.collection('schedules').get();
-        console.log(`2. Firestoreから ${schedulesSnapshot.size} 件の予定データを取得しました。`);
-
         const events = [];
         schedulesSnapshot.docs.forEach(doc => {
             const schedule = doc.data();
             const memberInfo = membersData[schedule.userId];
-
-            if (!memberInfo) {
-                console.warn(`警告: 予定(ID: ${doc.id}) に一致するメンバー情報が見つかりません。スキップします。`);
-                return;
-            }
+            if (!memberInfo) return; // メンバーデータがなければスキップ
 
             const eventProps = { firestoreId: doc.id, userId: schedule.userId, remarks: schedule.remarks };
-            
-            // 月表示用の終日イベントと、週表示用の時間指定イベントの両方を生成する
-            // FullCalendarが現在のビューに合わせて適切な方を自動で表示してくれる
-            
-            // 月表示用のイベント
-            events.push({
-                title: '', // 表示はeventContentで制御
-                start: schedule.date,
-                allDay: true,
-                backgroundColor: memberInfo.color,
-                borderColor: memberInfo.color,
-                extendedProps: eventProps,
-                // このイベントは週表示では表示しないようにする
-                display: 'background' 
-            });
-
-            // 週表示用のイベント
             const [startTime, endTime] = schedule.time.split('-');
+
+            // 時間指定が正しくできる予定のみをイベントとして生成
             if (startTime && endTime) {
                 events.push({
-                    title: '', // 表示はeventContentで制御
+                    // titleはeventContentで設定するため空にする
+                    title: '', 
                     start: `${schedule.date}T${startTime}`,
                     end: `${schedule.date}T${endTime}`,
                     backgroundColor: memberInfo.color,
                     borderColor: memberInfo.color,
                     extendedProps: eventProps
                 });
-            } else {
-                 console.warn(`警告: 予定(ID: ${doc.id}) の時間形式が正しくありません（time: "${schedule.time}"）。週表示ではスキップされます。`);
             }
         });
-
-        console.log("3. カレンダーに渡すイベント配列を作成しました。件数:", events.length);
         successCallback(events);
     } catch (error) {
         console.error('Error fetching events:', error);
         failureCallback(error);
     }
+}
 }
