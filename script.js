@@ -227,14 +227,16 @@ function initializeCalendar() {
             const year = info.view.currentStart.getFullYear();
             if (!japanHolidays[year]) {
                 await fetchJapanHolidays();
-                calendar.rerender();
+                // 祝日データを取得した後にカレンダーを再描画
+                calendar.refetchEvents(); // rerender から修正
             }
         },
         events: fetchCalendarEvents
     });
     
+    // 最初に祝日データを取得してから、カレンダーを初回描画する
     fetchJapanHolidays().then(() => {
-        calendar.render();
+        calendar.render(); // 祝日データを読み込んだ後に描画を開始
     });
 }
 
