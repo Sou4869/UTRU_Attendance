@@ -6,91 +6,213 @@ body {
     margin: 0;
 }
 main { padding: 0.5rem; }
-header { background-color: #2c3e50; color: white; padding: 1rem; text-align: center; }
-h1, h2 { margin-top: 0; color: #2c3e50; }
-h1 { color: white; font-size: 1.5rem; line-height: 1.4; }
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+h1, h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+h1 {
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
 h2 {
-    border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5rem;
-    text-align: center; margin-bottom: 1.5rem; font-size: 1.2rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
 }
 
 /* カードレイアウト */
 .card {
-    background-color: #fff; border-radius: 12px;
+    background-color: #fff;
+    border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 1rem 1.5rem; margin: 1rem auto; max-width: 800px;
+    padding: 1rem 1.5rem;
+    margin: 1rem auto;
+    max-width: 800px;
 }
 
 /* フォーム要素 */
 .control-group { margin-bottom: 1.5rem; }
-.control-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-select, input, button {
-    width: 100%; padding: 0.7rem; border-radius: 6px;
-    border: 1px solid #ccc; font-size: 1rem; box-sizing: border-box;
+.control-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
-.schedule-time select { width: auto; }
+select, input, button {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+.schedule-time select {
+    width: auto;
+}
 
 /* ラジオボタン */
-.radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
 .radio-group label {
-    padding: 0.6rem 1rem; border: 1px solid #ccc; border-radius: 20px;
-    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
 }
 .radio-group input { display: none; }
 .radio-group input:checked + label {
-    background-color: #3498db; color: white; border-color: #3498db;
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
 }
 
-/* 日付クイック選択ボタン */
-.date-quick-select { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+/* 日付入力欄 */
+.date-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.date-quick-select {
+    display: flex;
+    gap: 0.5rem;
+}
 .date-quick-select button {
-    flex: 1; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ddd;
-    background-color: #fff; border-radius: 6px; cursor: pointer;
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
 .date-quick-select button:hover { background-color: #f0f0f0; }
 
 /* アクションボタン */
-#status-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
-#status-buttons button, .submit-button { font-weight: bold; color: white; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+#status-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+#status-buttons button, .submit-button {
+    font-weight: bold;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 #status-buttons button:hover, .submit-button:hover { transform: translateY(-1px); }
 #status-buttons button:nth-child(1) { background-color: #27ae60; }
 #status-buttons button:nth-child(2) { background-color: #f39c12; }
 #status-buttons button:nth-child(3) { background-color: #c0392b; }
-.submit-button { background-color: #2980b9; margin-top: 1rem; }
+.submit-button {
+    background-color: #2980b9;
+    margin-top: 1rem;
+}
 
 /* 状態表示テーブル */
 #status-table { width: 100%; border-collapse: collapse; }
-#status-table th, #status-table td { border: 1px solid #e0e0e0; padding: 0.6rem; text-align: center; vertical-align: middle; }
+#status-table th, #status-table td {
+    border: 1px solid #e0e0e0;
+    padding: 0.6rem;
+    text-align: center;
+    vertical-align: middle;
+}
 #status-table th { background-color: #ecf0f1; }
-.timestamp { font-size: 0.8em; color: #7f8c8d; display: block; margin-top: 2px; }
-.status-badge { display: inline-block; padding: 0.4em 0.8em; border-radius: 6px; color: white; font-weight: bold; min-width: 60px; font-size: 0.9rem; }
-.status-in { background-color: #27ae60; } .status-out { background-color: #f39c12; }
-.status-away { background-color: #c0392b; } .status-unknown { background-color: #95a5a6; }
+.timestamp {
+    font-size: 0.8em;
+    color: #7f8c8d;
+    display: block;
+    margin-top: 2px;
+}
+.status-badge {
+    display: inline-block;
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    min-width: 60px;
+    font-size: 0.9rem;
+}
+.status-in { background-color: #27ae60; }
+.status-out { background-color: #f39c12; }
+.status-away { background-color: #c0392b; }
+.status-unknown { background-color: #95a5a6; }
 
 /* --- カレンダーのスタイル --- */
 #calendar { margin-top: 1rem; }
-.fc-event { cursor: pointer; border: 1px solid rgba(0,0,0,0.1) !important; color: white !important; font-weight: bold; padding: 2px 4px; margin-bottom: 2px; font-size: 0.85rem; }
-.fc-event-main { display: flex; align-items: center; justify-content: center; height: 100%; overflow: hidden; }
-.remarks-indicator { display: inline-flex; justify-content: center; align-items: center; background-color: rgba(255,255,255,0.8); color: #333; border-radius: 50%; width: 1.2em; height: 1.2em; font-size: 0.8em; margin-left: 4px; font-weight: bold; }
+.fc-event {
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    font-size: 0.85rem;
+}
+.fc-event-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+}
+.remarks-indicator {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.8);
+    color: #333;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    font-size: 0.8em;
+    margin-left: 4px;
+    font-weight: bold;
+}
 .tippy-box { font-size: 0.9rem; }
 
 /* 週表示バーの縦書きスタイル */
-.fc-event-vertical .fc-event-main { writing-mode: vertical-rl; text-orientation: mixed; line-height: 1.2; }
+.fc-event-vertical .fc-event-main {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    line-height: 1.2;
+}
 
 /* 週末と祝日のスタイル */
 .fc-day-sat { background-color: #eaf6ff; }
 .fc-day-sun, .fc-day.fc-holiday { background-color: #fff0f2; }
 .fc-day-sun .fc-daygrid-day-number, .fc-day.fc-holiday .fc-daygrid-day-number { color: #d32f2f; }
 .fc-day-sat .fc-daygrid-day-number { color: #1976d2; }
-.fc-timegrid-axis-frame-liquid { word-break: keep-all; white-space: nowrap; font-size: 0.8rem; }
 
 /* スマホ表示調整 */
 @media (max-width: 768px) {
-    .fc-header-toolbar.fc-toolbar { display: flex; flex-direction: column; gap: 0.75rem; }
-    .fc-toolbar-chunk { display: flex; justify-content: center; align-items: center; }
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) { order: 2; } /* prev,today,next */
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) { order: 3; } /* title */
-    .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) { order: 1; } /* month,week */
-    .fc .fc-toolbar-title { font-size: 1.2rem; }
+    /* カレンダーヘッダーを1列に */
+    .fc .fc-toolbar.fc-header-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* ボタンが多い場合に折り返す */
+    }
+    .fc .fc-toolbar-title {
+        font-size: 1.1rem;
+    }
+    .fc-header-toolbar .fc-button {
+        padding: 0.4em 0.5em;
+        font-size: 0.9em;
+    }
 }
