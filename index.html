@@ -35,11 +35,11 @@
             <div class="control-group">
                 <label for="schedule-date">日付:</label>
                 <div class="date-quick-select">
-                    <button onclick="setDate(1)">明日</button>
-                    <button onclick="setDate(2)">明後日</button>
-                    <button onclick="setDate(3)">3日後</button>
-                    <button onclick="setDate(4)">4日後</button>
-                    <button onclick="setDate(5)">5日後</button>
+                    <button type="button" onclick="setDate(1)">明日</button>
+                    <button type="button" onclick="setDate(2)">明後日</button>
+                    <button type="button" onclick="setDate(3)">3日後</button>
+                    <button type="button" onclick="setDate(4)">4日後</button>
+                    <button type="button" onclick="setDate(5)">5日後</button>
                 </div>
                 <input type="date" id="schedule-date">
             </div>
@@ -77,6 +77,12 @@
         </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     
