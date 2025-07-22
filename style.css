@@ -6,12 +6,12 @@ body {
     margin: 0;
 }
 main {
-    padding: 1rem;
+    padding: 0.5rem;
 }
 header {
     background-color: #2c3e50;
     color: white;
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     text-align: center;
 }
 h1, h2 {
@@ -20,7 +20,7 @@ h1, h2 {
 }
 h1 {
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     line-height: 1.4;
 }
 h2 {
@@ -28,6 +28,7 @@ h2 {
     padding-bottom: 0.5rem;
     text-align: center;
     margin-bottom: 1.5rem;
+    font-size: 1.2rem;
 }
 
 /* カードレイアウト */
@@ -35,24 +36,20 @@ h2 {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 1.5rem;
+    padding: 1rem;
     margin: 1rem auto;
     max-width: 800px;
 }
 
 /* フォーム要素 */
-.control-group {
-    margin-bottom: 1rem;
-}
 .control-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #555;
 }
-select, input, button {
+select, input[type="date"], input[type="text"], button {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.7rem;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 1rem;
@@ -60,187 +57,112 @@ select, input, button {
 }
 .schedule-time select {
     width: auto;
-    display: inline-block;
 }
 
 /* ラジオボタン */
-.radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
+.radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .radio-group label {
-    display: block;
-    padding: 0.6rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap; /* 改行しない */
+    padding: 0.6rem 1rem; border: 1px solid #ccc; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
-.radio-group input {
-    display: none;
-}
+.radio-group input { display: none; }
 .radio-group input:checked + label {
-    background-color: #3498db;
-    color: white;
-    border-color: #3498db;
+    background-color: #3498db; color: white; border-color: #3498db;
 }
 
 /* 日付クイック選択ボタン */
 .date-quick-select {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
 }
 .date-quick-select button {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.85rem;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    flex: 1; /* 均等に幅を分割 */
+    padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ddd;
+    background-color: #fff; border-radius: 6px; cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
-.date-quick-select button:hover {
-    background-color: #eee;
-}
+.date-quick-select button:hover { background-color: #f0f0f0; }
 
 /* アクションボタン */
-#status-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
+#status-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
 #status-buttons button, .submit-button {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+    font-weight: bold; color: white; border: none; cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }
-#status-buttons button:hover, .submit-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-#status-buttons button:nth-child(1) { background-color: #27ae60; } /* 在室 */
-#status-buttons button:nth-child(2) { background-color: #f39c12; } /* 外室中 */
-#status-buttons button:nth-child(3) { background-color: #c0392b; } /* 不在 */
-.submit-button {
-    background-color: #2980b9;
-    margin-top: 1rem;
-}
+#status-buttons button:hover, .submit-button:hover { transform: translateY(-1px); }
+#status-buttons button:nth-child(1) { background-color: #27ae60; }
+#status-buttons button:nth-child(2) { background-color: #f39c12; }
+#status-buttons button:nth-child(3) { background-color: #c0392b; }
+.submit-button { background-color: #2980b9; margin-top: 1rem; }
 
 /* 状態表示テーブル */
-#status-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
+#status-table { width: 100%; border-collapse: collapse; }
 #status-table th, #status-table td {
-    border: 1px solid #e0e0e0;
-    padding: 0.6rem;
-    text-align: center;
+    border: 1px solid #e0e0e0; padding: 0.6rem; text-align: center;
     vertical-align: middle;
 }
-#status-table th {
-    background-color: #ecf0f1;
-}
-.timestamp {
-    font-size: 0.8em;
-    color: #7f8c8d;
-    display: block;
-    margin-top: 2px;
-}
-
-/* 状態表示バッジ */
+#status-table th { background-color: #ecf0f1; }
+.timestamp { font-size: 0.8em; color: #7f8c8d; display: block; margin-top: 2px; }
 .status-badge {
-    display: inline-block;
-    padding: 0.4em 0.8em;
-    border-radius: 6px;
-    color: white;
-    font-weight: bold;
-    min-width: 60px;
-    font-size: 0.9rem;
+    display: inline-block; padding: 0.4em 0.8em; border-radius: 6px;
+    color: white; font-weight: bold; min-width: 60px; font-size: 0.9rem;
 }
-.status-in { background-color: #27ae60; }
-.status-out { background-color: #f39c12; }
-.status-away { background-color: #c0392b; }
-.status-unknown { background-color: #95a5a6; }
+.status-in { background-color: #27ae60; } .status-out { background-color: #f39c12; }
+.status-away { background-color: #c0392b; } .status-unknown { background-color: #95a5a6; }
 
-/* カレンダー */
+/* --- カレンダーのスタイル --- */
 #calendar { margin-top: 1rem; }
 .fc-event {
-    cursor: pointer;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    color: white !important;
+    cursor: pointer; border: 1px solid rgba(0,0,0,0.1) !important;
+    color: white !important; font-weight: bold; padding: 2px 4px;
+    margin-bottom: 2px; font-size: 0.85rem;
+}
+.fc-event-main { display: flex; align-items: center; overflow: hidden; }
+.remarks-indicator {
+    display: inline-block;
+    background-color: rgba(255,255,255,0.8);
+    color: #333;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    text-align: center;
+    line-height: 1.2em;
+    font-size: 0.8em;
+    margin-left: 4px;
     font-weight: bold;
-    padding: 2px 4px;
-    margin-bottom: 2px; /* イベント同士の間隔 */
 }
-.fc-event-main {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.tippy-box {
-    font-size: 0.9rem;
-}
+.tippy-box { font-size: 0.9rem; }
 
 /* 週末と祝日のスタイル */
-.fc-day-sat { background-color: #e6f2ff; } /* 土曜日 light blue */
-.fc-day-sun, .fc-day.fc-holiday { background-color: #ffebee; } /* 日曜日と祝日 light red */
-.fc-day-sun .fc-daygrid-day-number, .fc-day.fc-holiday .fc-daygrid-day-number { color: #e53935; } /* 日曜日と祝日の日付 red */
-.fc-day-sat .fc-daygrid-day-number { color: #1e88e5; } /* 土曜日の日付 blue */
+.fc-day-sat { background-color: #eaf6ff; }
+.fc-day-sun, .fc-day.fc-holiday { background-color: #fff0f2; }
+.fc-day-sun .fc-daygrid-day-number, .fc-day.fc-holiday .fc-daygrid-day-number { color: #d32f2f; }
+.fc-day-sat .fc-daygrid-day-number { color: #1976d2; }
 
-/* カレンダー スマホ表示調整 */
+/* カレンダーの「メンバー」の改行防止 */
+.fc-timegrid-axis-frame-liquid { word-break: keep-all; white-space: nowrap; font-size: 0.8rem; }
+
+/* スマホ表示調整 */
 @media (max-width: 768px) {
-    #calendar .fc-timegrid-slot-label-c {
-        display: none !important; /* 時間軸を非表示 */
+    /* カレンダーヘッダーの競合解消 */
+    .fc-header-toolbar.fc-toolbar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
     }
-    #calendar .fc-timegrid-event-harness {
-        overflow: hidden; /* イベントがはみ出さないように */
+    .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) { text-align: center; } /* title */
+    .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) { text-align: center; } /* center (empty) */
+    .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) { /* right (buttons) */
+        display: flex;
+        justify-content: space-between;
     }
-    #calendar .fc-toolbar-title {
-        font-size: 1rem;
+    .fc-header-toolbar .fc-button-group {
+        display: contents; /* ボタンを横並びに展開 */
     }
-    #calendar .fc-daygrid-day-number {
-        font-size: 0.9rem;
+    .fc-header-toolbar .fc-button {
+        flex: 1; /* ボタン幅を均等に */
     }
-    #calendar .fc-timegrid-event {
-        font-size: 0.8rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 2px;
-    }
-    #calendar .fc-col-header-cell-c {
-        padding: 0.3rem 0;
-        font-size: 0.8rem;
-    }
-}
-
-/* スマホ向け基本スタイル調整 */
-@media (max-width: 600px) {
-    body { padding: 0.5rem; }
-    main { padding: 0.5rem; }
-    header { padding: 1rem 0.5rem; }
-    h1 { font-size: 1.3rem; }
-    h2 { font-size: 1.1rem; margin-bottom: 1rem; }
-    .card { padding: 1rem; margin: 0.75rem auto; }
-    .control-group label { font-size: 0.9rem; margin-bottom: 0.3rem; }
-    select, input, button { padding: 0.6rem; font-size: 0.9rem; }
-    .radio-group label { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
-    #status-buttons { grid-template-columns: 1fr; gap: 0.3rem; margin-top: 1rem; }
-    .status-badge { font-size: 0.8rem; padding: 0.3em 0.6em; min-width: 50px; }
-    #status-table th, #status-table td { padding: 0.4rem; font-size: 0.8rem; }
-    .timestamp { font-size: 0.7rem; }
-    .date-quick-select { gap: 0.2rem; margin-bottom: 0.3rem; }
-    .date-quick-select button { padding: 0.2rem 0.4rem; font-size: 0.75rem; }
+    .fc .fc-toolbar-title { font-size: 1.1rem; }
 }
