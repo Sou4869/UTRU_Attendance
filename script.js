@@ -280,18 +280,31 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
             if (!memberInfo) return;
 
             const eventProps = { firestoreId: doc.id, userId: schedule.userId, remarks: schedule.remarks };
-            const [startTime, endTime] = schedule.time.split('-');
             
-            if (startTime && endTime) {
+            // ▼▼▼ PC版(Month表示)でカレンダーが読み込まれないバグを修正 ▼▼▼
+            if (calendar.view.type === 'dayGridMonth') {
                 events.push({
                     title: '', // 表示はeventContentで制御
-                    start: `${schedule.date}T${startTime}`,
-                    end: `${schedule.date}T${endTime}`,
+                    start: schedule.date,
+                    allDay: true,
                     backgroundColor: memberInfo.color,
                     borderColor: memberInfo.color,
                     extendedProps: eventProps
                 });
+            } else if (calendar.view.type === 'timeGridWeek') {
+                const [startTime, endTime] = schedule.time.split('-');
+                if (startTime && endTime) {
+                    events.push({
+                        title: '', // 表示はeventContentで制御
+                        start: `${schedule.date}T${startTime}`,
+                        end: `${schedule.date}T${endTime}`,
+                        backgroundColor: memberInfo.color,
+                        borderColor: memberInfo.color,
+                        extendedProps: eventProps
+                    });
+                }
             }
+            // ▲▲▲ PC版(Month表示)でカレンダーが読み込まれないバグを修正 ▲▲▲
         });
         successCallback(events);
     } catch (error) {
