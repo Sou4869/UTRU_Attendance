@@ -173,13 +173,11 @@ async function updateSchedule() {
     }
 
     try {
-      // ▼▼▼▼▼ ここから追加 ▼▼▼▼▼
         console.log("--- 予定登録データチェック ---");
         console.log("ユーザーID:", userId);
         console.log("日付:", date);
         console.log("時間:", scheduleTime);
         console.log("備考:", remarks);
-        // ▲▲▲▲▲ ここまで追加 ▲▲▲▲▲
 
         const querySnapshot = await db.collection('schedules').where('userId', '==', userId).where('date', '==', date).get();
 
@@ -248,7 +246,7 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
             const remarksText = schedule.remarks ? ' (!)' : '';
             
             // --- 月表示用のイベント ---
-            if (fetchInfo.view.type === 'dayGridMonth') {
+            if (calendar.view.type === 'dayGridMonth') {
                 events.push({
                     title: `${memberName}${remarksText}`,
                     start: schedule.date,
@@ -260,7 +258,7 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
             }
             
             // --- 週表示用のイベント ---
-            if (fetchInfo.view.type === 'timeGridWeek') {
+            if (calendar.view.type === 'timeGridWeek') {
                 // 1. all-dayスロットに名前を表示するためのイベント
                 events.push({
                     title: `${memberName}${remarksText}`,
