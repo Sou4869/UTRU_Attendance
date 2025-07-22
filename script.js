@@ -73,11 +73,9 @@ async function loadMembers() {
             input.id = radioId;
             input.name = group.name;
             input.value = doc.id;
-
             const label = document.createElement('label');
             label.htmlFor = radioId;
             label.textContent = member.name;
-
             wrapper.appendChild(input);
             wrapper.appendChild(label);
             group.container.appendChild(wrapper);
@@ -157,11 +155,11 @@ async function updateSchedule() {
 
 // --- カレンダー関連 ---
 async function fetchJapanHolidays() {
-    const year = new Date().getFullYear();
     // 複数年まとめて取得してキャッシュする
-    if (japanHolidays[year] && japanHolidays[year+1]) return;
+    if (Object.keys(japanHolidays).length > 0) return;
     try {
         const response = await fetch('https://holidays-jp.github.io/api/v1/date.json');
+        if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         // データを年ごとに整理してキャッシュ
         for (const dateStr in data) {
@@ -234,8 +232,10 @@ function initializeCalendar() {
         },
         events: fetchCalendarEvents
     });
-    calendar.render();
-    fetchJapanHolidays().then(() => calendar.rerender());
+    
+    fetchJapanHolidays().then(() => {
+        calendar.render();
+    });
 }
 
 async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) {
