@@ -313,4 +313,3 @@ async function fetchCalendarEvents(fetchInfo, successCallback, failureCallback) 
         failureCallback(error);
     }
 }
-}
