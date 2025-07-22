@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在室管理システム</title>
     <link rel="stylesheet" href="style.css">
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 </head>
 <body>
     <header>
-        <h1>都市交通研究室14号館814号室<br>在室管理システム</h1>
+        <h1>都市交通研究室 14号館 814号室<br>在室管理システム</h1>
     </header>
 
     <main>
@@ -19,10 +19,9 @@
             <h2>現在</h2>
             <div class="control-group">
                 <label>名前:</label>
-                <div id="user-radio-buttons" class="radio-group">
+                <div id="status-user-radios" class="radio-group">
                     </div>
             </div>
-
             <div id="status-buttons">
                 <button onclick="checkin('在室')">在室</button>
                 <button onclick="checkin('外室中')">外室中</button>
@@ -32,6 +31,11 @@
 
         <div class="card">
             <h2>在室予定を登録</h2>
+            <div class="control-group">
+                <label>名前:</label>
+                <div id="schedule-user-radios" class="radio-group">
+                    </div>
+            </div>
             <div class="control-group">
                 <label for="schedule-date">日付:</label>
                 <div class="date-quick-select">
@@ -66,8 +70,7 @@
                         <th>最終更新</th>
                     </tr>
                 </thead>
-                <tbody>
-                    </tbody>
+                <tbody></tbody>
             </table>
         </div>
 
@@ -79,7 +82,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
