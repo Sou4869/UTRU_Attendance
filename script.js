@@ -61,7 +61,6 @@ async function loadMembers() {
         const member = doc.data();
         membersData[doc.id] = { name: member.name, color: member.color || '#3788d8' };
         
-        // 「現在」用と「予定登録」用に2つラジオボタンセットを作成
         [
             { container: statusRadioContainer, name: 'status_user' },
             { container: scheduleRadioContainer, name: 'schedule_user' }
@@ -73,9 +72,11 @@ async function loadMembers() {
             input.id = radioId;
             input.name = group.name;
             input.value = doc.id;
+
             const label = document.createElement('label');
             label.htmlFor = radioId;
             label.textContent = member.name;
+
             wrapper.appendChild(input);
             wrapper.appendChild(label);
             group.container.appendChild(wrapper);
@@ -95,7 +96,17 @@ async function loadAllStatuses() {
         if (!logSnapshot.empty) {
             const latestLog = logSnapshot.docs[0].data();
             status = latestLog.status;
-            timestamp = latestLog.timestamp.toDate().toLocaleString('ja-JP');
+            
+            // ▼▼▼▼▼ タイムスタンプのフォーマットを修正 ▼▼▼▼▼
+            const date = latestLog.timestamp.toDate();
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const HH = String(date.getHours()).padStart(2, '0');
+            const MM = String(date.getMinutes()).padStart(2, '0');
+            timestamp = `${yyyy}/${mm}/${dd} ${HH}:${MM}`;
+            // ▲▲▲▲▲ タイムスタンプのフォーマットを修正 ▲▲▲▲▲
+            
             if (status === '在室') statusClass = 'status-in';
             else if (status === '外室中') statusClass = 'status-out';
         }
@@ -155,18 +166,14 @@ async function updateSchedule() {
 
 // --- カレンダー関連 ---
 async function fetchJapanHolidays() {
-    // 複数年まとめて取得してキャッシュする
     if (Object.keys(japanHolidays).length > 0) return;
     try {
         const response = await fetch('https://holidays-jp.github.io/api/v1/date.json');
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        // データを年ごとに整理してキャッシュ
         for (const dateStr in data) {
             const yearKey = new Date(dateStr).getFullYear();
-            if (!japanHolidays[yearKey]) {
-                japanHolidays[yearKey] = {};
-            }
+            if (!japanHolidays[yearKey]) japanHolidays[yearKey] = {};
             japanHolidays[yearKey][dateStr] = data[dateStr];
         }
     } catch (error) {
@@ -179,11 +186,13 @@ function initializeCalendar() {
     calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'ja',
         initialView: 'dayGridMonth',
+        // ▼▼▼▼▼ スマホ用ヘッダーレイアウトを定義 ▼▼▼▼▼
         headerToolbar: {
-            left: 'prev,next today',
+            left: 'dayGridMonth,timeGridWeek',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek'
+            right: 'prev,today,next'
         },
+        // ▲▲▲▲▲ スマホ用ヘッダーレイアウトを定義 ▲▲▲▲▲
         height: 'auto',
         views: {
             timeGridWeek: { allDayText: 'メンバー', dayHeaderFormat: { day: 'numeric' } }
@@ -227,16 +236,14 @@ function initializeCalendar() {
             const year = info.view.currentStart.getFullYear();
             if (!japanHolidays[year]) {
                 await fetchJapanHolidays();
-                // 祝日データを取得した後にカレンダーを再描画
-                calendar.refetchEvents(); // rerender から修正
+                calendar.refetchEvents();
             }
         },
         events: fetchCalendarEvents
     });
     
-    // 最初に祝日データを取得してから、カレンダーを初回描画する
     fetchJapanHolidays().then(() => {
-        calendar.render(); // 祝日データを読み込んだ後に描画を開始
+        calendar.render();
     });
 }
 
